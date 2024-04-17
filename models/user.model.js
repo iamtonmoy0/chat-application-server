@@ -16,7 +16,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  password: {},
+  password: {
+    type: String,
+    required: true,
+    set: function (v) {
+      if (this.isNew || this.isModified("password")) {
+        return bcrypt.hashSync(v, bcrypt.genSaltSync(10));
+      }
+      return v;
+    },
+  },
 });
 
 const User = model("User", userSchema);
