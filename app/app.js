@@ -10,6 +10,8 @@ app.use(express.json()); // parse incoming requests as json
 app.use(cors());
 app.use(morgan("dev"));
 
+// auth router
+app.use("/api/v1", require("../routes/user.routes"));
 // welcome route
 app.get("/", (req, res) => {
   res.send("Server is running");
