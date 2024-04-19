@@ -1,4 +1,4 @@
-const { responseError } = require("response-manager");
+const { responseError, responseSuccess } = require("response-manager");
 const http = require("response-status-code");
 const User = require("../models/user.model");
 
@@ -16,11 +16,14 @@ exports.registerUserServices = async (res, data) => {
   }
   // registering the user
   try {
-    let newUser = User.create(data);
+    let newUser = await User.create(data, { new: true });
     if (newUser) {
-      return responseSuccess(res, "success", "User registered successfully.", {
-        userId: newUser._id,
-      });
+      return responseSuccess(
+        res,
+        http.statusOk,
+        "User registered successfully.",
+        newUser
+      );
     }
   } catch (error) {
     return responseError(
