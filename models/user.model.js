@@ -1,5 +1,5 @@
 const { default: mongoose, Schema, model } = require("mongoose");
-
+const bcrypt = require("bcryptjs");
 const userSchema = new Schema({
   email: {
     type: String,

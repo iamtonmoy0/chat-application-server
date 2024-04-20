@@ -1,22 +1,22 @@
 const { responseError, responseSuccess } = require("response-manager");
 const http = require("response-status-code");
 const User = require("../models/user.model");
-
+const bcrypt = require("bcryptjs");
 exports.registerUserServices = async (res, data) => {
-  // check if user exist
-  const isEmail = await User.findOne({ email: data.email });
-  if (isEmail) {
-    responseError(
-      res,
-      http.statusInternalServerError,
-      "failed",
-      "email already in use"
-    );
-    return;
-  }
-  // registering the user
   try {
-    let newUser = await User.create(data, { new: true });
+    // check if user exist
+    const isEmail = await User.findOne({ email: data.email });
+    if (isEmail) {
+      return responseError(
+        res,
+        http.statusInternalServerError,
+        "failed",
+        "email already in use"
+      );
+    }
+    // registering the user
+    let newUser = await User.create(data);
+    // console.log(newUser);
     if (newUser) {
       return responseSuccess(
         res,
@@ -32,5 +32,31 @@ exports.registerUserServices = async (res, data) => {
       "failed",
       error.message
     );
+  }
+};
+// login
+exports.loginUserServices = async (res, data) => {
+  const isUser = await User.findOne({ email: data.email });
+  if (!isUser) {
+    return responseError(
+      res,
+      http.statusInternalServerError,
+      "failed",
+      "invalid credentials"
+    );
+  }
+  const validPassword = await bcrypt.compareSync(
+    data.password,
+    isUser.password
+  );
+  if (!validPassword) {
+    return responseError(
+      res,
+      http.statusUnauthorized,
+      "failed",
+      "Invalid password."
+    );
+  } else {
+    return responseSuccess(res, http.statusOk, "success", isUser);
   }
 };
