@@ -2,6 +2,7 @@ const { responseError, responseSuccess } = require("response-manager");
 const http = require("response-status-code");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
+const { generateToken } = require("../helpers/jwt.helpers");
 exports.registerUserServices = async (res, data) => {
   try {
     // check if user exist
@@ -16,13 +17,14 @@ exports.registerUserServices = async (res, data) => {
     }
     // registering the user
     let newUser = await User.create(data);
-    // console.log(newUser);
+    // generate token
+    const token = await generateToken(newUser.id);
     if (newUser) {
       return responseSuccess(
         res,
         http.statusOk,
         "User registered successfully.",
-        newUser
+        { token, user: newUser }
       );
     }
   } catch (error) {
@@ -57,6 +59,10 @@ exports.loginUserServices = async (res, data) => {
       "Invalid password."
     );
   } else {
-    return responseSuccess(res, http.statusOk, "success", isUser);
+    const token = await generateToken(isUser.id);
+    return responseSuccess(res, http.statusOk, "success", {
+      token,
+      user: isUser,
+    });
   }
 };
