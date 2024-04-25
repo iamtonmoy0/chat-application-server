@@ -1,4 +1,4 @@
-const { default: mongoose, Schema, model, model, Types } = require("mongoose");
+const {  Schema, model, Types } = require("mongoose");
 
 const conversationSchema = new Schema({
   participants: [{ type: Types.ObjectId, ref: "User" }],
