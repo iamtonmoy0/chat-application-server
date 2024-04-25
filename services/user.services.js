@@ -20,11 +20,16 @@ exports.registerUserServices = async (res, data) => {
     // generate token
     const token = await generateToken(newUser.id);
     if (newUser) {
+      const data = {
+        id: newUser._id,
+        email: newUser.email,
+        name: newUser.name,
+      };
       return responseSuccess(
         res,
         http.statusOk,
         "User registered successfully.",
-        { token, user: newUser }
+        { token, user: data }
       );
     }
   } catch (error) {
@@ -60,9 +65,14 @@ exports.loginUserServices = async (res, data) => {
     );
   } else {
     const token = await generateToken(isUser.id);
+    const data = {
+      id: isUser._id,
+      email: isUser.email,
+      name: isUser.name,
+    };
     return responseSuccess(res, http.statusOk, "success", {
       token,
-      user: isUser,
+      user: data,
     });
   }
 };
