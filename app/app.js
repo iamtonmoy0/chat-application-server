@@ -12,6 +12,9 @@ app.use(morgan("dev"));
 
 // auth router
 app.use("/api/v1", require("../routes/user.routes"));
+// conversations
+app.use("/api/v1", require("../routes/conversations.routes"));
+
 // welcome route
 app.get("/", (req, res) => {
   res.send("Server is running");

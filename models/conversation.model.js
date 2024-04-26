@@ -1,7 +1,7 @@
-const {  Schema, model, Types } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const conversationSchema = new Schema({
-  participants: [{ type: Types.ObjectId, ref: "User" }],
+  participants: [{ type: String }],
   messages: [{ type: Types.ObjectId, ref: "Message" }],
 });
 
