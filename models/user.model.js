@@ -26,7 +26,7 @@ const userSchema = new Schema({
       return v;
     },
   },
-});
+},{timestamps:true});
 
 const User = model("User", userSchema);
 
