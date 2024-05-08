@@ -12,3 +12,7 @@ exports.getMessagesByConversationIdService = async (res, query) => {
   }
   return responseSuccess(res, 200, "success", result);
 };
+exports.createMessagesServices = async (res, data) => {
+  const result = await Message.create(data);
+  return responseSuccess(res, 200, "success", result);
+};

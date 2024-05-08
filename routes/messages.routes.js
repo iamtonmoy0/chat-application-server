@@ -1,10 +1,13 @@
-const { getMessagesByConversationIdController } = require("../controllers/messages.controller")
+const {
+  getMessagesByConversationIdController,
+  createMessagesController,
+} = require("../controllers/messages.controller");
 
-const router=require("express").Router()
+const router = require("express").Router();
 
+router
+  .route("/messages")
+  .get(getMessagesByConversationIdController)
+  .post(createMessagesController);
 
-
-router.route("/messages").get(getMessagesByConversationIdController)
-
-
-module.exports=router
+module.exports = router;
