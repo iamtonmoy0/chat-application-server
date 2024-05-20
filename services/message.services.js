@@ -4,11 +4,11 @@ const Message = require("../models/message.model");
 exports.getMessagesByConversationIdService = async (res, query) => {
   const { limit, conversationId } = query;
   console.log(conversationId);
-  const result = await Message.find({ conversationId });
+  const result = await Message.find({ conversationId }).populate("sender","email name").populate("receiver","email name").sort("-createdAt");
 
   console.log(result);
   if (result.length <= 0) {
-    return responseError(res, 400, "failed", "no messages available");
+    return responseError(res, 200, "success", "no message available");
   }
   return responseSuccess(res, 200, "success", result);
 };

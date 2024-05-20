@@ -76,3 +76,15 @@ exports.loginUserServices = async (res, data) => {
     });
   }
 };
+// get user by email
+exports.getUserByEmailServices=async(res,userEmail)=>{
+  const result = await User.findOne({"email":userEmail})
+  if (!result){
+    return responseError(res,400,"failed","no user found")
+  }
+  const data ={
+    name:result.name,
+    email:result.email
+  }
+  responseSuccess(res,200,"success",data)
+}

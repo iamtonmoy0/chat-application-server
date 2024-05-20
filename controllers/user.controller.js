@@ -3,6 +3,7 @@ const http = require("response-status-code");
 const {
   registerUserServices,
   loginUserServices,
+  getUserByEmailServices,
 } = require("../services/user.services");
 
 exports.RegisterUserController = async (req, res) => {
@@ -21,3 +22,11 @@ exports.LoginUserController = async (req, res) => {
     responseError(res, http.statusInternalServerError, "failed", error.message);
   }
 };
+
+exports.getUserByEmailController=async(req,res)=>{
+ try {
+    await getUserByEmailServices(res,req.query.email);
+  } catch (error) {
+    responseError(res, http.statusInternalServerError, "failed", error.message);
+  } 
+}

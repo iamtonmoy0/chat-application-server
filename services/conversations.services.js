@@ -11,3 +11,16 @@ exports.getConversationsServices = async (res, query) => {
     return res.status(404).json("No conversations found");
   else return res.status(200).json(result);
 };
+// get single conversation
+exports.getSingleConversationServices = async (res, query) => {
+  const { userEmail, participantEmail } = query;
+
+  const result = await Conversation.find({})
+    .where("participants")
+    .in([userEmail, participantEmail])
+    .populate("users", "name email");
+
+  if (!result || !result.length)
+    return res.status(404).json("No conversations found");
+  else return res.status(200).json(result);
+};
